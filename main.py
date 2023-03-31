@@ -30,17 +30,17 @@ if __name__ == "__main__":
             old_button_status = buttonStatus
             buttonStatus = GPIO.input(button)
 
-            if buttonStatus == False:
+            if not buttonStatus:
                 # Don't want to change the output when button goes from 1->0
                 if buttonStatus != old_button_status:
                     # runs when button goes from 0->1
                     Status = not Status
                     GPIO.output(apiOut, Status)
 
-            if Status == False:
+            if not Status:
                 GPIO.output(led1,0)
                 GPIO.output(led2,0)
-            elif Status == True:
+            elif Status:
                 flash = time.time()
                 #flash Leds
                 if flash - oldflash > .5:
