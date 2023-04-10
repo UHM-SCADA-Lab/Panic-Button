@@ -15,4 +15,21 @@ from flask_restful import Api, Resource
 # global panic
 static = False
 
+
 def panicpressed():
+    global static
+    static = not static
+
+
+def apicall():
+    app = Flask(__name__)
+    api = Api(app)
+
+    class Panic(Resource):
+        def get(self):
+            panic = static
+            return panic
+
+    api.add_resource(Panic, '/')
+
+    app.run(host='10.1.1.145')
