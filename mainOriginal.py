@@ -3,7 +3,7 @@
 ##Date: 10-26-22
 ##Function: To create a functional panic button for UH's SCADA Lab
 
-import RPI.GPIO as GPIO     #import Raspberry PI Library
+import RPi.GPIO as GPIO     #import Raspberry PI Library
 import time                 #import sleep function for LED blinking
 import os
 
