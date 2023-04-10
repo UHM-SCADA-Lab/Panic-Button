@@ -35,6 +35,7 @@ def apicall():
 
 
 if __name__ == "__main2__":
+    global status
     apithread = threading.Thread(target=apicall(), name='apithread')
     apithread.start()
 
@@ -42,7 +43,7 @@ if __name__ == "__main2__":
     button.when_pressed = panicpressed
     led1 = LED(22)
     led2 = LED(27)
-    global status
+
 
     while True:
         if not status:
