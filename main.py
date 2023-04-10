@@ -62,7 +62,6 @@ def apicall():
 
     class Panic(Resource):
         def get(self):
-            global isPressed
             panic = isPressed
             return panic
 
@@ -74,7 +73,9 @@ def apicall():
 if __name__ == "__main__":
     # Create threads
     t1 = threading.Thread(target=ledcontrol())
+    print("started Thread t1")
     t2 = threading.Thread(target=apicall())
+    print("started Thread t2")
 
     # Start threads
     t1.start()
