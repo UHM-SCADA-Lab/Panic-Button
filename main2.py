@@ -35,9 +35,6 @@ def apicall():
 
 
 if __name__ == "__main2__":
-    global status
-
-
     button = Button(15)
     button.when_pressed = panicpressed
     led1 = LED(22)
