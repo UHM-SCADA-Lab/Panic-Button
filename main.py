@@ -29,30 +29,33 @@ def ledcontrol():
     GPIO.setup(led2, GPIO.OUT, initial=GPIO.LOW)  # Setting pin 15 as an output for led2 initialize it off
     GPIO.setup(button, GPIO.IN)  # Setting pin 10 as an input from button
 
-    while True:  # Runs forever
+    try:
+        while True:  # Runs forever
 
-        old_button_status = buttonstatus
-        buttonstatus = GPIO.input(button)
+            old_button_status = buttonstatus
+            buttonstatus = GPIO.input(button)
 
-        if not buttonstatus:
-            # Don't want to change the output when button goes from 1->0
-            if buttonstatus != old_button_status:
-                # runs when button goes from 0->1
-                status = not status
-                global isPressed
-                isPressed = status
+            if not buttonstatus:
+                # Don't want to change the output when button goes from 1->0
+                if buttonstatus != old_button_status:
+                    # runs when button goes from 0->1
+                    status = not status
+                    global isPressed
+                    isPressed = status
 
-        if not status:
-            GPIO.output(led1, 0)
-            GPIO.output(led2, 0)
-        elif status:
-            flash = time.time()
-            # flash Leds
-            if flash - oldflash > .5:
-                out = not out
-                oldflash = time.time()
-                GPIO.output(led2, out)
-                GPIO.output(led1, not out)
+            if not status:
+                GPIO.output(led1, 0)
+                GPIO.output(led2, 0)
+            elif status:
+                flash = time.time()
+                # flash Leds
+                if flash - oldflash > .5:
+                    out = not out
+                    oldflash = time.time()
+                    GPIO.output(led2, out)
+                    GPIO.output(led1, not out)
+    finally:
+        GPIO.cleanup()
 
 
 def apicall():
