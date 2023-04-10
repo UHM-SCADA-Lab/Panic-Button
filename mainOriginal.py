@@ -48,3 +48,5 @@ GPIO.setup(apiOut, GPIO.OUT, initial=GPIO.LOW)  #Setting pin 29 as output fro ap
                     oldflash = time.time()
                     GPIO.output(led2,out)
                     GPIO.output(led1,not out)
+    finally:
+        GPIO.cleanup()
