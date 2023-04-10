@@ -10,6 +10,7 @@ from time import sleep  # import sleep function for LED blinking
 import os
 from flask import Flask, request
 from flask_restful import Api, Resource
+from signal import pause
 
 # global panic
 status = False
@@ -18,6 +19,20 @@ status = False
 def panicpressed():
     global status
     status = not status
+
+
+def ledcontrol():
+    while True:
+        if not status:
+            led1.off()
+            led2.off()
+        elif status:
+            led1.on()
+            sleep(0.5)
+            led1.off()
+            led2.on()
+            sleep(0.5)
+            led2.off()
 
 
 def apicall():
@@ -40,16 +55,8 @@ if __name__ == "__main2__":
     led1 = LED(22)
     led2 = LED(27)
     apithread = threading.Thread(target=apicall(), name='apithread')
+    ledthread = threading.Thread(target=ledcontrol(), name='ledthread')
+    ledthread.start()
     apithread.start()
 
-    while True:
-        if not status:
-            led1.off()
-            led2.off()
-        elif status:
-            led1.on()
-            sleep(0.5)
-            led1.off()
-            led2.on()
-            sleep(0.5)
-            led2.off()
+    pause()
