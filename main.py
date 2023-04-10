@@ -81,7 +81,9 @@ if __name__ == "__main__":
     t1.start()
     t2.start()
 
-    #Wait for threads to finish. (they shoudld not)
+    #Wait for threads to finish. (they should not)
     t1.join()
     t2.join()
+
+    #print if threads finish, should not occur
     print("threads finished")
