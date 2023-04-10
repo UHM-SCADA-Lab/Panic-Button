@@ -4,21 +4,22 @@
 ##Function: To create a functional panic button for UH's SCADA Lab
 
 import threading
+import RPI.GPIO as GPIO  # import Raspberry PI Library
+import time  # import sleep function for LED blinking
+import os
+from flask import Flask, request
+from flask_restful import Api, Resource
 
 # global bool
 isPressed = False
 
 
-def LEDControl:
-    import RPI.GPIO as GPIO  # import Raspberry PI Library
-    import time  # import sleep function for LED blinking
-    import os
-
+def ledcontrol():
     button = 10  # Set variable for button pin
     led1 = 13  # Set variable for led 1 pin
     led2 = 15  # Set variable for led 2 pin
-    Status = False  # Set variable for status of panic button
-    buttonStatus = False
+    status = False  # Set variable for status of panic button
+    buttonstatus = False
     oldflash = time.time()
     out = True
 
@@ -31,21 +32,21 @@ def LEDControl:
     try:
         while True:  # Runs forever
 
-            old_button_status = buttonStatus
-            buttonStatus = GPIO.input(button)
+            old_button_status = buttonstatus
+            buttonstatus = GPIO.input(button)
 
-            if not buttonStatus:
+            if not buttonstatus:
                 # Don't want to change the output when button goes from 1->0
-                if buttonStatus != old_button_status:
+                if buttonstatus != old_button_status:
                     # runs when button goes from 0->1
-                    Status = not Status
+                    status = not status
                     global isPressed
-                    isPressed = Status
+                    isPressed = status
 
-            if not Status:
+            if not status:
                 GPIO.output(led1, 0)
                 GPIO.output(led2, 0)
-            elif Status:
+            elif status:
                 flash = time.time()
                 # flash Leds
                 if flash - oldflash > .5:
@@ -55,10 +56,7 @@ def LEDControl:
                     GPIO.output(led1, not out)
 
 
-def APICall:
-    from flask import Flask, request
-    from flask_restful import Api, Resource
-
+def apicall():
     app = Flask(__name__)
     api = Api(app)
 
@@ -75,8 +73,8 @@ def APICall:
 
 if __name__ == "__main__":
     # Create threads
-    t1 = threading.Thread(target=LEDControl())
-    t2 = threading.Thread(target=APICall())
+    t1 = threading.Thread(target=ledcontrol())
+    t2 = threading.Thread(target=apicall())
 
     # Start threads
     t1.start()

@@ -23,7 +23,7 @@ GPIO.setup(led2, GPIO.OUT, initial=GPIO.LOW)    #Setting pin 15 as an output for
 GPIO.setup(button, GPIO.IN)                     #Setting pin 10 as an input from button
 GPIO.setup(apiOut, GPIO.OUT, initial=GPIO.LOW)  #Setting pin 29 as output fro api panic status
 
-#if __name__ == "__main__":
+#if __name__ == "__main3__":
     try:
         while True:                             #Runs forever
 
