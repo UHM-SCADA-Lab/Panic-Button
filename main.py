@@ -72,9 +72,9 @@ def apicall():
 
 if __name__ == "__main__":
     # Create threads
-    t1 = threading.Thread(target=ledcontrol())
+    t1 = threading.Thread(target=ledcontrol(), name='t1')
     print("started Thread t1")
-    t2 = threading.Thread(target=apicall())
+    t2 = threading.Thread(target=apicall(), name='t2')
     print("started Thread t2")
 
     # Start threads
