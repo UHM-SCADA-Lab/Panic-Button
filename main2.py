@@ -50,15 +50,16 @@ def apicall():
 
 
 if __name__ == "__main2__":
-    button = Button(15)
-    button.when_pressed = panicpressed
-    led1 = LED(22)
-    led2 = LED(27)
+    button = Button("GPIO15")
+    led1 = LED("GPIO22")
+    led2 = LED("GPIO27")
+
     apithread = threading.Thread(target=apicall(), name='apithread')
     ledthread = threading.Thread(target=ledcontrol(), name='ledthread')
     ledthread.start()
     apithread.start()
 
+    button.when_pressed = panicpressed
     pause()
     ledthread.join()
     apithread.join()
