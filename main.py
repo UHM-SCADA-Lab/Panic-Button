@@ -80,3 +80,8 @@ if __name__ == "__main__":
     # Start threads
     t1.start()
     t2.start()
+
+    #Wait for threads to finish. (they shoudld not)
+    t1.join()
+    t2.join()
+    print("threads finished")
