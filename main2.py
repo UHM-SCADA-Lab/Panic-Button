@@ -6,7 +6,7 @@
 
 import threading
 from gpiozero import Button, LED  # import Button to press, and LED to control LED
-from time import sleep      # import sleep function for LED blinking
+from time import sleep  # import sleep function for LED blinking
 import os
 from flask import Flask, request
 from flask_restful import Api, Resource
@@ -36,14 +36,14 @@ def apicall():
 
 if __name__ == "__main2__":
     global status
-    apithread = threading.Thread(target=apicall(), name='apithread')
-    apithread.start()
+
 
     button = Button(15)
     button.when_pressed = panicpressed
     led1 = LED(22)
     led2 = LED(27)
-
+    apithread = threading.Thread(target=apicall(), name='apithread')
+    apithread.start()
 
     while True:
         if not status:
