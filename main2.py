@@ -60,3 +60,5 @@ if __name__ == "__main2__":
     apithread.start()
 
     pause()
+    ledthread.join()
+    apithread.join()
