@@ -61,12 +61,12 @@ def apicall():
 
 if __name__ == "__main__":
     # Create threads
-    #
     # buttonthread = threading.Thread(target=button_control(), name='buttonthread')
     print("setting up button")
     button = Button(2)
     button.when_pressed = panic_pressed
     print("button should work")
+
     led_thread = threading.Thread(target=led_control(), name='ledthread')
     api_thread = threading.Thread(target=apicall(), name='apithread')
 
