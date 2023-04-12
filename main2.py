@@ -16,12 +16,12 @@ from signal import pause
 status = False
 
 
-def panicpressed():
+def panic_pressed():
     global status
     status = not status
 
 
-def ledcontrol():
+def led_control():
     led1 = LED("GPIO22")
     led2 = LED("GPIO27")
     while True:
@@ -51,16 +51,17 @@ def apicall():
     app.run(host='10.1.1.145')
 
 
-def buttoncontrol():
+def button_control():
     button = Button("GPIO15")
-    button.when_pressed = panicpressed
+    button.when_pressed = panic_pressed
     pause()
+
 
 if __name__ == "__main2__":
     # Create threads
     apithread = threading.Thread(target=apicall(), name='apithread')
-    ledthread = threading.Thread(target=ledcontrol(), name='ledthread')
-    buttonthread = threading.Thread(target=buttoncontrol(), name='buttonthread')
+    ledthread = threading.Thread(target=led_control(), name='ledthread')
+    buttonthread = threading.Thread(target=button_control(), name='buttonthread')
 
     # Start threads
     ledthread.start()
