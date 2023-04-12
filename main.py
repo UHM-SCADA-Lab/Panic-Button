@@ -29,7 +29,7 @@ def led_control():
     global status
     print("Starting Loop")
     while True:
-        sleep(16/1000)
+        sleep(16 / 1000)
         if not status:
             led1.off()
             led2.off()
@@ -42,23 +42,6 @@ def led_control():
             led2.off()
 
 
-def apicall():
-    app = Flask(__name__)
-    api = Api(app)
-    hostname = socket.gethostname()
-    IPAddr = socket.gethostbyname(hostname)
-    print("IP Address = " + IPAddr)
-
-    class Panic(Resource):
-        def get(self):
-            panic = status
-            return panic
-
-    api.add_resource(Panic, '/')
-
-    app.run(host=IPAddr)
-
-
 if __name__ == "__main__":
     # Create threads
     # apithread = threading.Thread(target=apicall(), name='apithread')
@@ -67,8 +50,24 @@ if __name__ == "__main__":
     button = Button(2)
     button.when_pressed = panic_pressed
     print("button should work")
-    ledthread = threading.Thread(target=led_control(), name='ledthread')
+    app = Flask(__name__)
+    api = Api(app)
+    hostname = socket.gethostname()
+    IPAddr = socket.gethostbyname(hostname)
+    print("IP Address = " + IPAddr)
 
+
+    class Panic(Resource):
+        def get(self):
+            panic = status
+            return panic
+
+
+    api.add_resource(Panic, '/')
+
+    app.run(host=IPAddr)
+
+    ledthread = threading.Thread(target=led_control(), name='ledthread')
 
     # Start threads
     print("starting button thread")
@@ -76,7 +75,6 @@ if __name__ == "__main__":
     print("starting led control thread")
     ledthread.start()
     # apithread.start()
-
 
     # Wait for threads to complete (they should not)
     # buttonthread.join()
