@@ -11,6 +11,7 @@ import os
 from flask import Flask, request
 from flask_restful import Api, Resource
 from signal import pause
+import socket
 
 # global panic
 status = False
@@ -40,6 +41,8 @@ def led_control():
 def apicall():
     app = Flask(__name__)
     api = Api(app)
+    hostname=socket.gethostname()
+    IPAddr=socket.gethostbyname(hostname)
 
     class Panic(Resource):
         def get(self):
@@ -48,7 +51,7 @@ def apicall():
 
     api.add_resource(Panic, '/')
 
-    app.run(host='10.1.1.145')
+    app.run(host=IPAddr)
 
 
 def button_control():
