@@ -70,8 +70,9 @@ def button_control():
 if __name__ == "__main__":
     # Create threads
     # apithread = threading.Thread(target=apicall(), name='apithread')
-    ledthread = threading.Thread(target=led_control(), name='ledthread')
     buttonthread = threading.Thread(target=button_control(), name='buttonthread')
+    ledthread = threading.Thread(target=led_control(), name='ledthread')
+
 
     # Start threads
     print("starting button thread")
