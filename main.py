@@ -52,6 +52,7 @@ def apicall():
 
     class Panic(Resource):
         def get(self):
+            global status
             panic = status
             print("Panicking!")
             return panic
