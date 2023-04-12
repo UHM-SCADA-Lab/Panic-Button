@@ -2,90 +2,77 @@
 ##Author: Bodie Collins, Joshua Brewer
 ##Date: 04-06-23
 ##Function: To create a functional panic button for UH's SCADA Lab
+## This should be much simpler
 
 import threading
-import RPi.GPIO as GPIO  # import Raspberry PI Library
-import time  # import sleep function for LED blinking
+from gpiozero import Button, LED  # import Button to press, and LED to control LED
+from time import sleep  # import sleep function for LED blinking
 import os
 from flask import Flask, request
 from flask_restful import Api, Resource
+from signal import pause
+import socket
 
-# global bool
-isPressed = False
+# global panic
+status = False
 
 
-def ledcontrol():
-    button = 10  # Set variable for button pin
-    led1 = 13  # Set variable for led 1 pin
-    led2 = 15  # Set variable for led 2 pin
-    status = False  # Set variable for status of panic button
-    buttonstatus = False
-    oldflash = time.time()
-    out = True
+def panic_pressed():
+    global status
+    status = not status
 
-    GPIO.setwarnings(False)  # Ignore Warnings
-    GPIO.setmode(GPIO.BOARD)  # use physical pin numbering
-    GPIO.setup(led1, GPIO.OUT, initial=GPIO.LOW)  # Setting pin 13 as an output for led initialize it off
-    GPIO.setup(led2, GPIO.OUT, initial=GPIO.LOW)  # Setting pin 15 as an output for led2 initialize it off
-    GPIO.setup(button, GPIO.IN)  # Setting pin 10 as an input from button
 
-    try:
-        while True:  # Runs forever
-
-            old_button_status = buttonstatus
-            buttonstatus = GPIO.input(button)
-
-            if not buttonstatus:
-                # Don't want to change the output when button goes from 1->0
-                if buttonstatus != old_button_status:
-                    # runs when button goes from 0->1
-                    status = not status
-                    global isPressed
-                    isPressed = status
-
-            if not status:
-                GPIO.output(led1, 0)
-                GPIO.output(led2, 0)
-            elif status:
-                flash = time.time()
-                # flash Leds
-                if flash - oldflash > .5:
-                    out = not out
-                    oldflash = time.time()
-                    GPIO.output(led2, out)
-                    GPIO.output(led1, not out)
-    finally:
-        GPIO.cleanup()
+def led_control():
+    led1 = LED("GPIO22")
+    led2 = LED("GPIO27")
+    while True:
+        if not status:
+            led1.off()
+            led2.off()
+        elif status:
+            led1.on()
+            sleep(0.5)
+            led1.off()
+            led2.on()
+            sleep(0.5)
+            led2.off()
 
 
 def apicall():
     app = Flask(__name__)
     api = Api(app)
+    hostname = socket.gethostname()
+    IPAddr = socket.gethostbyname(hostname)
+    print("IP Address = " + IPAddr)
 
     class Panic(Resource):
         def get(self):
-            panic = isPressed
+            panic = status
             return panic
 
     api.add_resource(Panic, '/')
 
-    app.run(host='10.1.1.145')
+    app.run(host=IPAddr)
+
+
+def button_control():
+    button = Button("GPIO15")
+    button.when_pressed = panic_pressed
+    pause()
 
 
 if __name__ == "__main__":
     # Create threads
-    t1 = threading.Thread(target=ledcontrol(), name='t1')
-    print("started Thread t1")
-    t2 = threading.Thread(target=apicall(), name='t2')
-    print("started Thread t2")
+    apithread = threading.Thread(target=apicall(), name='apithread')
+    ledthread = threading.Thread(target=led_control(), name='ledthread')
+    buttonthread = threading.Thread(target=button_control(), name='buttonthread')
 
     # Start threads
-    t1.start()
-    t2.start()
+    ledthread.start()
+    apithread.start()
+    buttonthread.start()
 
-    # Wait for threads to finish. (they should not)
-    t1.join()
-    t2.join()
-
-    # print if threads finish, should not occur
-    print("threads finished")
+    # Wait for threads to complete (they should not)
+    ledthread.join()
+    apithread.join()
+    buttonthread.join()
