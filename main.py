@@ -64,7 +64,6 @@ def button_control():
     button = Button(2)
     button.when_pressed = panic_pressed
     print("button should work")
-    pause()
 
 
 if __name__ == "__main__":
