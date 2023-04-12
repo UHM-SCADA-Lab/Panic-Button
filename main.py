@@ -59,6 +59,7 @@ def apicall():
 def button_control():
     button = Button(15)
     button.when_pressed = panic_pressed
+
     pause()
 
 
@@ -69,11 +70,11 @@ if __name__ == "__main__":
     buttonthread = threading.Thread(target=button_control(), name='buttonthread')
 
     # Start threads
+    buttonthread.start()
     ledthread.start()
     apithread.start()
-    buttonthread.start()
 
     # Wait for threads to complete (they should not)
+    buttonthread.join()
     ledthread.join()
     apithread.join()
-    buttonthread.join()
