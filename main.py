@@ -53,7 +53,7 @@ def apicall():
     class Panic(Resource):
         def get(self):
             panic = status
-            print(panic)
+            print("Panicking!")
             return panic
 
     api.add_resource(Panic, '/')
