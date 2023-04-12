@@ -69,9 +69,9 @@ if __name__ == "__main__":
     print("button should work")
 
     print("Creating LED control thread")
-    led_thread = threading.Thread(target=led_control())
+    led_thread = threading.Thread(target=led_control)
     print("Creating API call thread")
-    api_thread = threading.Thread(target=apicall())
+    api_thread = threading.Thread(target=apicall)
 
 
     # Start threads
