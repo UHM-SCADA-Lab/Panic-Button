@@ -26,6 +26,7 @@ def led_control():
     led1 = LED("GPIO22")
     led2 = LED("GPIO27")
     while True:
+        print("LOOP")
         if not status:
             led1.off()
             led2.off()
