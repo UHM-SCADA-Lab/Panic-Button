@@ -26,6 +26,7 @@ def panic_pressed():
 def led_control():
     led1 = LED(22)
     led2 = LED(27)
+    sleep(3)
     global status
     print("Starting Loop")
     while True:
