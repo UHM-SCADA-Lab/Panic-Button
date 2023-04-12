@@ -56,10 +56,6 @@ def apicall():
     app.run(host=IPAddr)
 
 
-def button_control():
-
-
-
 if __name__ == "__main__":
     # Create threads
     # apithread = threading.Thread(target=apicall(), name='apithread')
