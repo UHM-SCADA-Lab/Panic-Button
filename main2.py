@@ -22,6 +22,8 @@ def panicpressed():
 
 
 def ledcontrol():
+    led1 = LED("GPIO22")
+    led2 = LED("GPIO27")
     while True:
         if not status:
             led1.off()
@@ -49,17 +51,23 @@ def apicall():
     app.run(host='10.1.1.145')
 
 
-if __name__ == "__main2__":
+def buttoncontrol():
     button = Button("GPIO15")
-    led1 = LED("GPIO22")
-    led2 = LED("GPIO27")
-
-    apithread = threading.Thread(target=apicall(), name='apithread')
-    ledthread = threading.Thread(target=ledcontrol(), name='ledthread')
-    ledthread.start()
-    apithread.start()
-
     button.when_pressed = panicpressed
     pause()
+
+if __name__ == "__main2__":
+    # Create threads
+    apithread = threading.Thread(target=apicall(), name='apithread')
+    ledthread = threading.Thread(target=ledcontrol(), name='ledthread')
+    buttonthread = threading.Thread(target=buttoncontrol(), name='buttonthread')
+
+    # Start threads
+    ledthread.start()
+    apithread.start()
+    buttonthread.start()
+
+    # Wait for threads to complete (they should not)
     ledthread.join()
     apithread.join()
+    buttonthread.join()
