@@ -23,8 +23,8 @@ def panic_pressed():
 
 
 def led_control():
-    led1 = LED("GPIO22")
-    led2 = LED("GPIO27")
+    led1 = LED(22)
+    led2 = LED(27)
     while True:
         print("LOOP")
         if not status:
@@ -57,7 +57,7 @@ def apicall():
 
 
 def button_control():
-    button = Button("GPIO15")
+    button = Button(15)
     button.when_pressed = panic_pressed
     pause()
 
