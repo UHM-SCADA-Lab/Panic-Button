@@ -68,9 +68,10 @@ if __name__ == "__main__":
     # buttonthread.start()
     ledthread.start()
     # apithread.start()
-    button = Button(15)
+    print("setting up button")
+    button = Button(2)
     button.when_pressed = panic_pressed
-
+    print("button should work")
     pause()
 
     # Wait for threads to complete (they should not)
