@@ -18,6 +18,7 @@ status = False
 
 
 def panic_pressed():
+    print("Changing button status")
     global status
     status = not status
 
@@ -26,6 +27,7 @@ def led_control():
     led1 = LED(22)
     led2 = LED(27)
     global status
+    print("Starting Loop")
     while True:
         if not status:
             led1.off()
