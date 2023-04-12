@@ -30,17 +30,15 @@ def led_control():
     global status
     print("Starting Loop")
     while True:
-        sleep(16/1000)
+        sleep(33/1000)
         if not status:
             led1.off()
             led2.off()
         elif status:
             led1.on()
-            print("22 ON")
             sleep(0.5)
             led1.off()
             led2.on()
-            print("27 ON")
             sleep(0.5)
             led2.off()
 
