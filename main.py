@@ -25,8 +25,8 @@ def panic_pressed():
 def led_control():
     led1 = LED(22)
     led2 = LED(27)
+    global status
     while True:
-        print("LOOP")
         if not status:
             led1.off()
             led2.off()
