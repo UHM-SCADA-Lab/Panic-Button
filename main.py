@@ -58,23 +58,29 @@ def apicall():
     app.run(host=IPAddr)
 
 
-if __name__ == "__main__":
-    # Create threads
-    # apithread = threading.Thread(target=apicall(), name='apithread')
-    ledthread = threading.Thread(target=led_control(), name='ledthread')
-    # buttonthread = threading.Thread(target=button_control(), name='buttonthread')
-
-    # Start threads
-    # buttonthread.start()
-    ledthread.start()
-    # apithread.start()
+def button_control():
     print("setting up button")
     button = Button(2)
     button.when_pressed = panic_pressed
     print("button should work")
     pause()
 
+
+if __name__ == "__main__":
+    # Create threads
+    # apithread = threading.Thread(target=apicall(), name='apithread')
+    ledthread = threading.Thread(target=led_control(), name='ledthread')
+    buttonthread = threading.Thread(target=button_control(), name='buttonthread')
+
+    # Start threads
+    print("starting button thread")
+    buttonthread.start()
+    print("starting led control thread")
+    ledthread.start()
+    # apithread.start()
+
+
     # Wait for threads to complete (they should not)
-    # buttonthread.join()
+    buttonthread.join()
     ledthread.join()
     # apithread.join()
