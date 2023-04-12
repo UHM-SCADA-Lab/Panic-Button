@@ -67,12 +67,14 @@ if __name__ == "__main__":
     button.when_pressed = panic_pressed
     print("button should work")
 
+    print("Creating LED control thread")
     led_thread = threading.Thread(target=led_control(), name='ledthread')
+    print("Creating API call thread")
     api_thread = threading.Thread(target=apicall(), name='apithread')
 
 
     # Start threads
-    print("starting button thread")
+    # print("starting button thread")
     # buttonthread.start()
     print("starting led control thread")
     led_thread.start()
