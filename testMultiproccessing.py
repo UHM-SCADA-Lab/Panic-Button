@@ -1,25 +1,26 @@
-import multiprocessing
-from time import sleep
-
-boolVar = False
+import time
+from multiprocessing import Process, Manager, Value
 
 
-def func1(_bool):  # function which changes the boolean
-    global boolVar
-    boolVar = True
-
-
-def func2():  # function which have no effect on the change frm func1
-    global boolVar
-    sleep(2)
-    if boolVar:
-        print("worked!")
-    if not boolVar:
-        print("did not work")
+def foo(data, name=''):
+    print(type(data), data.value, name)
+    data.value += 1
 
 
 if __name__ == "__main__":
-    p1 = multiprocessing.Process(target=func1, args=(boolVar,))  # my processes
-    p2 = multiprocessing.Process(target=func2)
-    p1.start()
-    p2.start()
+    manager = Manager()
+    x = manager.Value('i', 0)
+    y = Value('i', 0)
+
+    for i in range(5):
+        Process(target=foo, args=(x, 'x')).start()
+        Process(target=foo, args=(y, 'y')).start()
+
+    print('Before waiting: ')
+    print('x = {0}'.format(x.value))
+    print('y = {0}'.format(y.value))
+
+    time.sleep(5.0)
+    print('After waiting: ')
+    print('x = {0}'.format(x.value))
+    print('y = {0}'.format(y.value))
