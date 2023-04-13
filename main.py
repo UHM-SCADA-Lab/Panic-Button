@@ -4,16 +4,14 @@
 ##Function: To create a functional panic button for UH's SCADA Lab
 ## This should be much simpler
 
-import threading
-from gpiozero import Button, LED  # import Button to press, and LED to control LED
-from time import sleep  # import sleep function for LED blinking
-import os
-from flask import Flask, request
-from flask_restful import Api, Resource
-from signal import pause
 import socket
+import threading
+from time import sleep  # import sleep function for LED blinking
+from flask import Flask
+from flask_restful import Api, Resource
+from gpiozero import Button, LED  # import Button to press, and LED to control LED
 
-# global panic
+# global panic bool
 status = False
 
 
@@ -63,26 +61,23 @@ def apicall():
 
 
 if __name__ == "__main__":
-    # Create threads
-    # buttonthread = threading.Thread(target=button_control(), name='buttonthread')
     print("setting up button")
     button = Button(2)
     button.when_pressed = panic_pressed
     print("button should work")
 
+    # Create threads
     print("Creating LED control thread")
     led_thread = threading.Thread(target=led_control)
     print("Creating API call thread")
     api_thread = threading.Thread(target=apicall)
 
     # Start threads
-    # print("starting button thread")
-    # buttonthread.start()
     print("starting led control thread")
     led_thread.start()
+    print("starting API thread")
     api_thread.start()
 
     # Wait for threads to complete (they should not)
-    # buttonthread.join()
     led_thread.join()
     api_thread.join()
