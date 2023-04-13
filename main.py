@@ -30,7 +30,7 @@ def led_control():
     global status
     print("Starting Loop")
     while True:
-        sleep(33/1000)
+        sleep(33 / 1000)
         if not status:
             led1.off()
             led2.off()
@@ -58,7 +58,7 @@ def apicall():
             return panic
 
     api.add_resource(Panic, '/')
-
+    print("app.run next")
     app.run(host=IPAddr)
 
 
@@ -75,14 +75,12 @@ if __name__ == "__main__":
     print("Creating API call thread")
     api_thread = threading.Thread(target=apicall)
 
-
     # Start threads
     # print("starting button thread")
     # buttonthread.start()
     print("starting led control thread")
     led_thread.start()
     api_thread.start()
-
 
     # Wait for threads to complete (they should not)
     # buttonthread.join()
