@@ -75,7 +75,6 @@ def apicall():
 
 
 if __name__ == "__main__":
-    sleep(5)
     # print("setting up button")
     button = Button(2)
     button.when_pressed = panic_pressed
