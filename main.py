@@ -57,7 +57,11 @@ def led_control():
 
 def apicall():
     app = Flask(__name__)
-    os.environ['WERKZEUG_RUN_MAIN'] = 'true'
+    import logging
+    log = logging.getLogger('werkzeug')
+    log.setLevel(logging.ERROR)
+    app.logger.disabled = True
+    log.disabled = True
     api = Api(app)
 
     class Panic(Resource):
