@@ -62,6 +62,14 @@ def apicall():
 
 
 if __name__ == "__main__":
+
+    # Testing only
+    import urllib.request
+
+    external_ip = urllib.request.urlopen('https://ident.me').read().decode('utf8')
+
+    print(external_ip)
+
     print("setting up button")
     button = Button(2)
     button.when_pressed = panic_pressed
