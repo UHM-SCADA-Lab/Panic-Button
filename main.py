@@ -58,6 +58,7 @@ def apicall():
     api.add_resource(Panic, '/')
     print("app.run next")
     app.run(host=IPAddr)
+    print("app running")
 
 
 if __name__ == "__main__":
