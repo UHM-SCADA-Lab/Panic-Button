@@ -44,8 +44,7 @@ def led_control():
 def apicall():
     app = Flask(__name__)
     api = Api(app)
-    hostname = socket.gethostname()
-    IPAddr = socket.getfqdn(hostname)
+    IPAddr = socket.gethostbyname(socket.getfqdn())
     print("IP Address = " + IPAddr)
 
     class Panic(Resource):
