@@ -15,6 +15,19 @@ from gpiozero import Button, LED  # import Button to press, and LED to control L
 status = False
 
 
+def get_ip():
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    s.settimeout(0)
+    try:
+        # doesn't even have to be reachable
+        s.connect(('10.254.254.254', 1))
+        IP = s.getsockname()[0]
+    except Exception:
+        IP = '127.0.0.1'
+    finally:
+        s.close()
+    return IP
+
 def panic_pressed():
     print("Changing button status")
     global status
@@ -44,7 +57,7 @@ def led_control():
 def apicall():
     app = Flask(__name__)
     api = Api(app)
-    IPAddr = socket.gethostbyname(socket.getfqdn())
+    IPAddr = get_ip()
     print("IP Address = " + IPAddr)
 
     class Panic(Resource):
