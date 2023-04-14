@@ -10,6 +10,7 @@ from time import sleep  # import sleep function for LED blinking
 from flask import Flask
 from flask_restful import Api, Resource
 from gpiozero import Button, LED  # import Button to press, and LED to control LED
+import os
 
 # global panic bool
 status = False
@@ -56,6 +57,7 @@ def led_control():
 
 def apicall():
     app = Flask(__name__)
+    os.environ['WERKZEUG_RUN_MAIN'] = 'true'
     api = Api(app)
 
     class Panic(Resource):
