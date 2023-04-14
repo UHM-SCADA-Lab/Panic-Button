@@ -28,8 +28,9 @@ def get_ip():
         s.close()
     return IP
 
+
 def panic_pressed():
-    print("Changing button status")
+    # print("Changing button status")
     global status
     status = not status
 
@@ -39,7 +40,6 @@ def led_control():
     led2 = LED(27)
     sleep(3)
     global status
-    print("Starting Loop")
     while True:
         if not status:
             led1.off()
@@ -57,40 +57,35 @@ def led_control():
 def apicall():
     app = Flask(__name__)
     api = Api(app)
-    IPAddr = get_ip()
-    print("IP Address = " + IPAddr)
 
     class Panic(Resource):
         def get(self):
             global status
             panic = status
-            print("Panicking!")
             return panic
 
     api.add_resource(Panic, '/')
-    print("app.run next")
-    app.run(host=IPAddr)
-    print("app running")
+    app.run(host=get_ip())
 
 
 if __name__ == "__main__":
-    print("setting up button")
+    # print("setting up button")
     button = Button(2)
     button.when_pressed = panic_pressed
-    print("button should work")
+    # print("button should work")
 
     # Create threads
-    print("Creating LED control thread")
+    # print("Creating LED control thread")
     led_thread = threading.Thread(target=led_control)
     led_thread.setDaemon(True)
-    print("Creating API call thread")
+    # print("Creating API call thread")
     api_thread = threading.Thread(target=apicall)
     api_thread.setDaemon(True)
 
     # Start threads
-    print("starting led control thread")
+    # print("starting led control thread")
     led_thread.start()
-    print("starting API thread")
+    # print("starting API thread")
     api_thread.start()
 
     # Wait for threads to complete (they should not)
