@@ -70,8 +70,10 @@ if __name__ == "__main__":
     # Create threads
     print("Creating LED control thread")
     led_thread = threading.Thread(target=led_control)
+    led_thread.setDaemon(True)
     print("Creating API call thread")
     api_thread = threading.Thread(target=apicall)
+    api_thread.setDaemon(True)
 
     # Start threads
     print("starting led control thread")
