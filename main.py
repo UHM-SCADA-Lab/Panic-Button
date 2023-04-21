@@ -39,15 +39,15 @@ def panic_pressed():
 
 # Function led_control controls the LEDs
 def led_control():
-    led1 = LED(22)
-    led2 = LED(27)
+    led1 = LED(22)  # led1 is connected to GPIO 22
+    led2 = LED(27)  # led2 is connected to GPIO 27
     global status
     while True:
-        if not status:
+        if not status:  # Turn both leds off
             led1.off()
             led2.off()
-            sleep(33 / 1000)
-        elif status:
+            sleep(33 / 1000)    # check 30 times a second
+        elif status:    # Blink leds
             led1.on()
             sleep(0.5)
             led1.off()
@@ -72,27 +72,23 @@ def apicall():
             return panic
 
     api.add_resource(Panic, '/')
-    app.run(host=get_ip())
+    app.run(host=get_ip())  # start the restful api
 
 
 if __name__ == "__main__":
-    # print("setting up button")
-    button = Button(2)
-    button.when_pressed = panic_pressed
-    # print("button should work")
+    button = Button(2)  # button is connected to GPIO 2
+    button.when_pressed = panic_pressed # Creates callback to panic_pressed function
 
     # Create threads
-    # print("Creating LED control thread")
-    led_thread = threading.Thread(target=led_control)
+    led_thread = threading.Thread(target=led_control)   # Create thread that executes led_control()
+    api_thread = threading.Thread(target=apicall)   # Create thread that executes apicall()
+
+    # Set threads to be run in background
     led_thread.setDaemon(True)
-    # print("Creating API call thread")
-    api_thread = threading.Thread(target=apicall)
     api_thread.setDaemon(True)
 
     # Start threads
-    # print("starting led control thread")
     led_thread.start()
-    # print("starting API thread")
     api_thread.start()
 
     # Wait for threads to complete (they should not)
