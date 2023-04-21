@@ -16,6 +16,7 @@ import os
 status = False
 
 
+# return the ip address of the local network excluding the loopback address
 def get_ip():
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     s.settimeout(0)
@@ -30,12 +31,13 @@ def get_ip():
     return IP
 
 
+# Change state of global bool status
 def panic_pressed():
-    # print("Changing button status")
     global status
     status = not status
 
 
+# Function led_control controls the LEDs
 def led_control():
     led1 = LED(22)
     led2 = LED(27)
@@ -56,7 +58,7 @@ def led_control():
 
 def apicall():
     app = Flask(__name__)
-    import logging
+    import logging  # Next 4 lines used to suppress the api output
     log = logging.getLogger('werkzeug')
     log.setLevel(logging.ERROR)
     app.logger.disabled = True
